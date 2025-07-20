@@ -1,0 +1,131 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f9fafb;
+}
+
+.backButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #d1d5db;
+  color: #111827;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.backButton:hover {
+  background-color: #9ca3af;
+}
+
+.formWrapper {
+  width: 30%;
+  height: 50%;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+
+.createButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.createButton:hover {
+  background-color: #2563eb;
+}
+
+/* ===== レスポンシブ対応 ===== */
+
+@media (max-width: 1024px) {
+  .formWrapper {
+    width: 60%;
+    height: auto;
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .formWrapper {
+    width: 90%;
+    min-width: 0;
+    padding: 2rem 1rem;
+    height: auto;
+  }
+
+  .input {
+    font-size: 0.95rem;
+  }
+
+  .createButton {
+    align-self: center;
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formWrapper {
+    width: 96%;
+    padding: 2rem 0.5rem;
+    max-height: 80%;
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .input {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+
+  .createButton {
+    align-self: center;
+    width: 100%;
+    max-width: 180px;
+  }
+}

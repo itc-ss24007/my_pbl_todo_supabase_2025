@@ -1,26 +1,36 @@
-import { createClient } from "@/utils/supabase/server"
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default async function Home() {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (user) {
-    redirect("/dashboard")
+    redirect("/dashboard");
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-gray-900">マイアプリへようこそ</CardTitle>
-          <CardDescription className="text-lg text-gray-600">Supabase認証機能付きNext.jsアプリ</CardDescription>
+          <CardTitle className="text-3xl font-bold text-gray-900">
+            マイアプリへようこそ
+          </CardTitle>
+          <CardDescription className="text-lg text-gray-600">
+            Supabase認証機能付きNext.jsアプリ
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-3">
@@ -37,5 +47,5 @@ export default async function Home() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

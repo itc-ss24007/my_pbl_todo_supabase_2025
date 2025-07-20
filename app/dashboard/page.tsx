@@ -1,18 +1,28 @@
-import { createClient } from "@/utils/supabase/server"
-import { redirect } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import LogoutButton from "@/components/logout-button"
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import HomeScreen from "./_components/HomeScreen";
+import { UserRepository, User } from "../_repositories/User";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import LogoutButton from "@/components/logout-button";
 
 export default async function Dashboard() {
-  const supabase = await createClient()
+  const supabase = await createClient();
+  const users: User[] = await UserRepository.findMany();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login")
+    redirect("/login");
   }
 
   return (
@@ -37,7 +47,10 @@ export default async function Dashboard() {
               <p className="text-sm text-gray-600">メール: {user.email}</p>
               <p className="text-sm text-gray-600">ユーザーID: {user.id}</p>
               <p className="text-sm text-gray-600">
-                最終ログイン: {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString("ja-JP") : "不明"}
+                最終ログイン:{" "}
+                {user.last_sign_in_at
+                  ? new Date(user.last_sign_in_at).toLocaleString("ja-JP")
+                  : "不明"}
               </p>
             </CardContent>
           </Card>
@@ -65,8 +78,9 @@ export default async function Dashboard() {
               </Button>
             </CardContent>
           </Card>
+          <HomeScreen users={users} />
         </div>
       </div>
     </div>
-  )
+  );
 }
