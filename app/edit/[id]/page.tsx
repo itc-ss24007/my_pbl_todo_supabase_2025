@@ -3,13 +3,13 @@ export const dynamic = "force-dynamic";
 import EditScreen from "./_components/EditScreen";
 
 export default async function EditUserPage({
-	params,
+  params,
 }: {
-	params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 }) {
-	const resolvedParams = await params;
-	const userId = Number(resolvedParams.id);
-	return <EditScreen userId={userId} />;
+  const resolvedParams = await params;
+  const userId = Number(resolvedParams.id);
+  return <EditScreen userId={userId} />;
 }
 // export default async function EditUserPage({ params }) {
 //   const userId = Number(params.id);

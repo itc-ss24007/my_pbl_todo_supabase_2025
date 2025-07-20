@@ -10,16 +10,21 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email } = await req.json();
+    const { name, email, supabaseId } = await req.json();
 
-    if (!name || !email) {
+    if (!email || !supabaseId) {
       return NextResponse.json(
-        { error: "名前とメールが必要です" },
+        { error: "メールとsupabaseIdは必須です" },
         { status: 400 }
       );
     }
 
-    const user = await UserRepository.create({ name, email });
+    const user = await UserRepository.createUser({
+      name,
+      email,
+      supabaseId,
+    });
+
     return NextResponse.json(user, { status: 201 });
   } catch (error) {
     console.error("POST /api/users error:", error);

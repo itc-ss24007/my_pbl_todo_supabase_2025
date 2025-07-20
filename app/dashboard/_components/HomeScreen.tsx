@@ -35,9 +35,9 @@ export default function HomeScreen({ users }: Props) {
     <div className={styles.container}>
       <div className={styles.headerRow}>
         <h2 className={styles.title}>ユーザーリスト</h2>
-        <Link href="/create" className={styles.createButton}>
+        {/* <Link href="/create" className={styles.createButton}>
           ＋ 新規ユーザー作成
-        </Link>
+        </Link> */}
       </div>
       <table className={`table-auto ${styles.userTable}`}>
         <thead>
@@ -45,7 +45,6 @@ export default function HomeScreen({ users }: Props) {
             <th className={styles.userId}>ユーザーID</th>
             <th className={styles.userName}>名前</th>
             <th className={styles.userEmail}>Email</th>
-            <th className={styles.userAction}>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -58,18 +57,6 @@ export default function HomeScreen({ users }: Props) {
               <td className={styles.userId}>{user.id}</td>
               <td className={styles.userName}>{user.name}</td>
               <td className={styles.userEmail}>{user.email}</td>
-              <td>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteUser(user.id);
-                  }}
-                  disabled={deletingId === user.id}
-                  className="bg-transparent hover:bg-red-100 text-red-500 p-2 rounded"
-                >
-                  <Trash2 className="inline" />
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>

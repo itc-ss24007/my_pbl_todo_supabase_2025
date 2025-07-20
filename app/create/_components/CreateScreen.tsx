@@ -1,19 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./CreateScreen.module.css";
+// import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 export default function CreateScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [supabaseId, setSupabaseId] = useState<string | null>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    const getUserId = async () => {
+      const supabase = createClient(); // ここでクライアントを作成
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setSupabaseId(user?.id ?? null);
+    };
+
+    getUserId();
+  }, []);
+
   const handleCreateUser = async () => {
+    if (!supabaseId) {
+      alert("ログイン情報が見つかりません");
+      return;
+    }
+
     const res = await fetch("/api/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ name, email, supabaseId }),
     });
 
     if (res.ok) {
@@ -25,47 +47,22 @@ export default function CreateScreen() {
 
   return (
     <div className={styles.container}>
-      <button onClick={() => router.back()} className={styles.backButton}>
-        戻る
+      <h2 className={styles.title}>ユーザー作成</h2>
+      <input
+        className={styles.input}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="名前"
+      />
+      <input
+        className={styles.input}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="メールアドレス"
+      />
+      <button className={styles.button} onClick={handleCreateUser}>
+        作成する
       </button>
-
-      <form
-        className={styles.formWrapper}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCreateUser();
-        }}
-      >
-        <h1 className={styles.title}>ユーザー作成</h1>
-        <label className={styles.label} htmlFor="name-input">
-          名前
-        </label>
-
-        <input
-          id="name-input"
-          type="text"
-          placeholder="名前"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className={styles.input}
-          required
-        />
-        <label className={styles.label} htmlFor="email-input">
-          メールアドレス
-        </label>
-        <input
-          type="email"
-          placeholder="メールアドレス"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={styles.input}
-          required
-        />
-
-        <button type="submit" className={styles.createButton}>
-          作成
-        </button>
-      </form>
     </div>
   );
 }

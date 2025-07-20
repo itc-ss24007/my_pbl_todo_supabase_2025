@@ -2,8 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import HomeScreen from "./_components/HomeScreen";
-import { UserRepository, User } from "../_repositories/User";
-
+import { UserRepository } from "../_repositories/User";
 import {
   Card,
   CardContent,
@@ -15,15 +14,31 @@ import LogoutButton from "@/components/logout-button";
 
 export default async function Dashboard() {
   const supabase = await createClient();
-  const users: User[] = await UserRepository.findMany();
 
   const {
-    data: { user },
+    data: { user: supabaseUser },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!supabaseUser) {
     redirect("/login");
   }
+
+  let currentUser = await UserRepository.findBySupabaseId(supabaseUser.id);
+
+  if (!currentUser) {
+    currentUser = await UserRepository.createUser({
+      name: supabaseUser.email?.split("@")[0] || "NoName",
+      email: supabaseUser.email || "",
+      supabaseId: supabaseUser.id,
+    });
+  }
+
+  // 🔽 共通でユーザー一覧を取得（ifの外）
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const res = await fetch(`${baseUrl}/api/users`, {
+    cache: "no-store",
+  });
+  const users = await res.json();
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -37,24 +52,33 @@ export default async function Dashboard() {
           ✅ ログインに成功しました！
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6">
           <Card>
             <CardHeader>
               <CardTitle>ようこそ！</CardTitle>
-              <CardDescription>認証が正常に完了しました</CardDescription>
+              <CardDescription></CardDescription>
+              <h1>こんにちは {currentUser.name ?? "ユーザー"} さん！</h1>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600">メール: {user.email}</p>
-              <p className="text-sm text-gray-600">ユーザーID: {user.id}</p>
-              <p className="text-sm text-gray-600">
-                最終ログイン:{" "}
-                {user.last_sign_in_at
-                  ? new Date(user.last_sign_in_at).toLocaleString("ja-JP")
-                  : "不明"}
-              </p>
+              <div className="grid grid-cols-2 gap-y-2 text-sm text-gray-600">
+                <p>メール:</p>
+                <p>{supabaseUser.email}</p>
+
+                {/* <p>ユーザーID:</p>
+    <p>{supabaseUser.id}</p> */}
+
+                <p>最終ログイン:</p>
+                <p>
+                  {supabaseUser.last_sign_in_at
+                    ? new Date(supabaseUser.last_sign_in_at).toLocaleString(
+                        "ja-JP"
+                      )
+                    : "不明"}
+                </p>
+              </div>
             </CardContent>
           </Card>
-
+          {/* 
           <Card>
             <CardHeader>
               <CardTitle>プロフィール</CardTitle>
@@ -65,20 +89,12 @@ export default async function Dashboard() {
                 プロフィール編集
               </Button>
             </CardContent>
-          </Card>
+          </Card> */}
 
-          <Card>
-            <CardHeader>
-              <CardTitle>設定</CardTitle>
-              <CardDescription>環境設定を変更</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="outline" className="w-full bg-transparent">
-                設定を開く
-              </Button>
-            </CardContent>
-          </Card>
-          <HomeScreen users={users} />
+          {/* ✅ ユーザー一覧表示 */}
+          {/* <HomeScreen users={users} /> */}
+          <HomeScreen users={[currentUser]} />
+          {/* ここで１ユーザーのみを表示 */}
         </div>
       </div>
     </div>
