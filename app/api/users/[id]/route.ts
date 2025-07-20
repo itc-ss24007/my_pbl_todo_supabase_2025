@@ -7,7 +7,7 @@ export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await context.params; // ← ✅ await を追加
+  const { id } = await context.params;
   const userId = Number(id);
 
   if (isNaN(userId)) {

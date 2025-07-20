@@ -21,7 +21,15 @@ export default function PostScreen({ posts }: Props) {
 
   return (
     <div className="mt-6">
-      <h2 className="text-2xl font-bold mb-4">📚 投稿一覧</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold mb-4">📚 投稿一覧</h2>
+        <button
+          onClick={() => router.push("/post-create")}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          ＋投稿
+        </button>
+      </div>
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
@@ -33,7 +41,11 @@ export default function PostScreen({ posts }: Props) {
         </thead>
         <tbody>
           {posts.map((post) => (
-            <tr key={post.id} className="hover:bg-gray-50 cursor-pointer">
+            <tr
+              key={post.id}
+              className="hover:bg-gray-50 cursor-pointer"
+              onClick={() => router.push(`/post-edit/${post.id}`)}
+            >
               <td className="px-4 py-2 border-b">{post.title}</td>
               <td className="px-4 py-2 border-b">{post.content}</td>
               <td className="px-4 py-2 border-b">

@@ -36,4 +36,27 @@ export namespace PostRepository {
       data: { title, content, userId },
     });
   }
+
+  export async function findById(id: number): Promise<Post | null> {
+    return await prisma.post.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
+  export async function update(
+    id: number,
+    data: { title: string; content: string }
+  ) {
+    return await prisma.post.update({
+      where: { id },
+      data,
+    });
+  }
 }

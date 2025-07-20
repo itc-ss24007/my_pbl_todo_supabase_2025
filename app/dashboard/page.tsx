@@ -91,7 +91,7 @@ export default async function Dashboard() {
           <HomeScreen users={[currentUser]} />
           {/* <PostScreen users={userWithPosts} /> */}
           {/* <PostScreen users={userWithPosts} /> */}
-          <PostForm userId={currentUser.id} />
+          {/* <PostForm userId={currentUser.id} /> */}
           <PostScreen
             posts={posts.map((post) => ({
               ...post,
