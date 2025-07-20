@@ -8,10 +8,21 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  supabaseId   String?   @unique
-  email        String   @unique
-  name         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime? @updatedAt
+  id         Int      @id @default(autoincrement())
+  supabaseId String?  @unique
+  email      String   @unique
+  name       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime? @updatedAt
+  posts      Post[]   
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  userId    Int  // 外部キー
+  user      User     @relation(fields: [userId], references: [id])
 }
