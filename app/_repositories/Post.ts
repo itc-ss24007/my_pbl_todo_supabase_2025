@@ -4,6 +4,7 @@ import { Post as PrismaPost } from "@prisma/client";
 
 export type Post = PrismaPost & {
   user?: {
+    supabaseId: any;
     name: string | null;
   };
 };
@@ -20,6 +21,7 @@ export namespace PostRepository {
       include: {
         user: {
           select: {
+            supabaseId: true,
             name: true,
           },
         },
@@ -43,6 +45,7 @@ export namespace PostRepository {
       include: {
         user: {
           select: {
+            supabaseId: true, //ここでスパベースIDを呼んでいる
             name: true,
           },
         },
@@ -59,4 +62,10 @@ export namespace PostRepository {
       data,
     });
   }
+
+  export const deletePostById = async (id: number) => {
+    return await prisma.post.delete({
+      where: { id },
+    });
+  };
 }

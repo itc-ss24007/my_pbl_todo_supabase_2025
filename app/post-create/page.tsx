@@ -1,7 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
-import PostForm from "../dashboard/_components/PostForm";
+// import PostForm from "../dashboard/_components/PostForm";
 import { redirect } from "next/navigation";
 import { UserRepository } from "../_repositories/User";
+import PostForm from "./_components/PostForm";
 
 export default async function Page() {
   const supabase = await createClient();
