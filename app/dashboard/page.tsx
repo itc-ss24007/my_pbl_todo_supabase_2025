@@ -64,6 +64,7 @@ export default async function Dashboard() {
 					<Card>
 						<CardHeader>
 							<CardTitle>ようこそ！</CardTitle>
+
 							<CardDescription></CardDescription>
 							<h1>こんにちは {currentUser.name ?? "ユーザー"} さん！</h1>
 						</CardHeader>
