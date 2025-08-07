@@ -11,20 +11,22 @@ interface MemoCreateRequestBody {
 }
 // GET - 全メモの取得
 export async function GET() {
-  const supabase = await createSupabaseServerClient();
-  const {
-  data: { user },
-  error: userError,
-} = await supabase.auth.getUser();
-
-if (userError || !user) {
-  return NextResponse.json({ error: '認証されていません' }, { status: 401 });
-}
   try {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return NextResponse.json({ error: '認証されていません' }, { status: 401 });
+    }
+
     const { data: memos, error } = await supabase
       .from('memos')
       .select('*')
       .order('createdAt', { ascending: false });
+      
     if (error) {
       console.error('メモの取得に失敗しました:', error);
       return NextResponse.json(
@@ -32,9 +34,23 @@ if (userError || !user) {
         { status: 500 }
       );
     }
+    
     return NextResponse.json(memos, { status: 200 });
   } catch (error) {
     console.error('メモの取得に失敗しました:', error);
+    
+    // Check if it's an environment variable error
+    if (error instanceof Error && error.message.includes('environment variable')) {
+      return NextResponse.json(
+        { 
+          message: 'サーバー設定エラー', 
+          error: error.message,
+          hint: 'Supabaseの環境変数が正しく設定されていません。.env.localファイルを確認してください。'
+        },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       { message: 'メモの取得に失敗しました', error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
