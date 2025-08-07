@@ -11,8 +11,8 @@ interface Memo {
   items: { text: string; checked: boolean }[] | string | null;
   type: "checklist" | "text";
   textContent: string | null;
-  images: { id: string; url: string; caption?: string }[] | string | null;
-  urls: { id: string; url: string; title: string; description?: string }[] | string | null;
+  images: { id: number; url: string; caption?: string }[] | string | null;
+  urls: { id: number; url: string; title: string; description?: string }[] | string | null;
   createdAt: string;
   updatedAt: string;
 }
