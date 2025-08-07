@@ -30,7 +30,7 @@ interface MemoUpdateRequestBody {
 // GET - 単一メモの取得
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
     const { id } = await params;
