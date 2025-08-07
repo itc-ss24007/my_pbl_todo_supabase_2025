@@ -1,10 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 // import { Button } from "@/components/ui/button";
-import HomeScreen from "./_components/HomeScreen";
-import PostScreen from "./_components/PostScreen";
 import { UserRepository } from "../_repositories/User";
-import { PostRepository } from "../_repositories/Post";
+import MemoPage from '../memo/page';
 
 import {
 	Card,
@@ -36,17 +34,6 @@ export default async function Dashboard() {
 		});
 	}
 
-	// 🔽 共通でユーザー一覧を取得（ifの外）
-	// const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-	// const res = await fetch(`${baseUrl}/api/users`, {
-	//   cache: "no-store",
-	// });
-
-	// const userWithPosts = await UserRepository.findManyWithPosts();
-	// ここ無くてもいい
-	// const yu-za-
-
-	const posts = await PostRepository.findMany();
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -88,22 +75,9 @@ export default async function Dashboard() {
 						</CardContent>
 					</Card>
 
-					{/* ✅ ユーザー一覧表示 */}
-					{/* <HomeScreen users={users} /> */}
-					<HomeScreen users={[currentUser]} />
-					{/* <PostScreen users={userWithPosts} /> */}
-					{/* <PostScreen users={userWithPosts} /> */}
-					{/* <PostForm userId={currentUser.id} /> */}
-					<PostScreen
-						posts={posts.map((post) => ({
-							...post,
-							createdAt:
-								post.createdAt instanceof Date
-									? post.createdAt.toISOString()
-									: post.createdAt,
-						}))}
-					/>
-					{/* ここで１ユーザーのみを表示 */}
+					<section>
+        <MemoPage />
+      </section>
 				</div>
 			</div>
 		</div>
