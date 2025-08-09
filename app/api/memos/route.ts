@@ -1,10 +1,10 @@
 // app/api/memos/route.ts
-
 import { NextResponse } from 'next/server';
 import { MemoRepository } from '@/app/_repositories/Memo';
-import { createSupabaseServerClient } from '@/lib/supabase'; // ユーザー認証には引き続き使用
+import { createSupabaseServerClient } from '@/lib/supabase';
+import { findBySupabaseId } from '@/app/_repositories/User';
 
-// メモ作成リクエストボディの型定義
+// メモ作成時のリクエストボディ型
 interface MemoCreateRequestBody {
   title: string;
   items?: string | null;
@@ -14,48 +14,52 @@ interface MemoCreateRequestBody {
   type: 'checklist' | 'text';
 }
 
-// ✅ GET: 全メモを取得（Prisma経由）
+// 共通処理：現在のログインユーザーを取得
+async function getCurrentDbUser() {
+  const supabase =  await createSupabaseServerClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    // ログインしていない場合は null を返す
+    return null;
+  }
+  // supabaseId からデータベース上のユーザーを取得
+  return await findBySupabaseId(user.id);
+}
+
+// 【GET】現在ログイン中のユーザーのメモ一覧を取得
 export async function GET() {
   try {
-    const memos = await MemoRepository.findMany();
+    const dbUser = await getCurrentDbUser();
+    if (!dbUser) {
+      return NextResponse.json({ error: '認証されていません' }, { status: 401 });
+    }
+
+    // ユーザーIDでフィルターをかけてメモを取得
+    const memos = await MemoRepository.findManyByUserId(dbUser.id);
     return NextResponse.json(memos, { status: 200 });
   } catch (error) {
-    console.error('メモの取得に失敗:', error);
-    return NextResponse.json({ message: '取得エラー', error: error instanceof Error ? error.message : '不明なエラー' }, { status: 500 });
+    console.error('メモ取得エラー:', error);
+    return NextResponse.json({ message: 'メモの取得に失敗しました' }, { status: 500 });
   }
 }
 
-// ✅ POST: 新しいメモを作成（Prisma経由）
+// 【POST】新しいメモを作成（現在ログイン中のユーザーに紐づけ）
 export async function POST(request: Request) {
   try {
-    const supabase = await createSupabaseServerClient(); // 認証用
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
+    const dbUser = await getCurrentDbUser();
+    if (!dbUser) {
       return NextResponse.json({ error: '認証されていません' }, { status: 401 });
     }
 
     const body: MemoCreateRequestBody = await request.json();
 
-    // バリデーション
-    if (!body.title || body.title.trim() === '') {
-      return NextResponse.json({ error: 'タイトルは必須です' }, { status: 400 });
-    }
-    if (!['checklist', 'text'].includes(body.type)) {
-      return NextResponse.json({ error: 'タイプが不正です' }, { status: 400 });
+    // バリデーション：タイトル必須
+    if (!body.title || !['checklist', 'text'].includes(body.type)) {
+      return NextResponse.json({ error: 'タイトルが空か、タイプが不正です' }, { status: 400 });
     }
 
-    // SupabaseのID → User IDを特定（prismaのuserテーブルから）
-    const { findBySupabaseId } = await import('@/app/_repositories/User');
-    const dbUser = await findBySupabaseId(user.id);
-
-    if (!dbUser) {
-      return NextResponse.json({ error: 'ユーザーが見つかりません' }, { status: 404 });
-    }
-
+    // メモを作成
     const newMemo = await MemoRepository.create({
       title: body.title,
       items: body.type === 'checklist' ? body.items ?? '' : '',
@@ -68,25 +72,39 @@ export async function POST(request: Request) {
 
     return NextResponse.json(newMemo, { status: 201 });
   } catch (error) {
-    console.error('メモ作成失敗:', error);
-    return NextResponse.json({ message: '作成エラー', error: error instanceof Error ? error.message : '不明なエラー' }, { status: 500 });
+    console.error('メモ作成エラー:', error);
+    return NextResponse.json({ message: 'メモの作成に失敗しました' }, { status: 500 });
   }
 }
 
-// ✅ DELETE: IDで削除（Prisma経由）
+// 【DELETE】メモIDで削除。所有者のみ削除可能
 export async function DELETE(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json({ error: 'メモIDが必要です' }, { status: 400 });
+    const dbUser = await getCurrentDbUser();
+    if (!dbUser) {
+      return NextResponse.json({ error: '認証されていません' }, { status: 401 });
     }
 
-    const deleted = await MemoRepository.deleteById(Number(id));
-    return NextResponse.json({ message: '削除成功', deleted }, { status: 200 });
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) {
+      return NextResponse.json({ error: 'メモIDが指定されていません' }, { status: 400 });
+    }
+
+    // メモの存在と所有者チェック
+    const memo = await MemoRepository.findById(Number(id));
+    if (!memo) {
+      return NextResponse.json({ error: 'メモが存在しません' }, { status: 404 });
+    }
+    if (memo.userId !== dbUser.id) {
+      return NextResponse.json({ error: 'このメモの削除権限がありません' }, { status: 403 });
+    }
+
+    // 削除実行
+    await MemoRepository.deleteById(memo.id);
+    return NextResponse.json({ message: 'メモを削除しました' }, { status: 200 });
   } catch (error) {
-    console.error('削除失敗:', error);
-    return NextResponse.json({ message: '削除エラー', error: error instanceof Error ? error.message : '不明なエラー' }, { status: 500 });
+    console.error('メモ削除エラー:', error);
+    return NextResponse.json({ message: 'メモの削除に失敗しました' }, { status: 500 });
   }
 }

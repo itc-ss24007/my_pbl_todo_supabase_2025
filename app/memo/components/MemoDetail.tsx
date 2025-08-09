@@ -11,8 +11,8 @@ interface Memo {
   items: { text: string; checked: boolean }[] | string | null;
   type: "checklist" | "text";
   textContent: string | null;
-  images: { id: number; url: string; caption?: string }[] | string | null;
-  urls: { id: number; url: string; title: string; description?: string }[] | string | null;
+  images: { id: number | string; url: string; caption?: string }[] | string | null;
+  urls: { id: number | string; url: string; title: string; description?: string }[] | string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -23,7 +23,6 @@ interface MemoDetailProps {
 }
 
 function MemoDetail({ memoId, onBack }: MemoDetailProps) {
-  //const [memo, setMemo] = useState<Memo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [title, setTitle] = useState('');
@@ -32,13 +31,60 @@ function MemoDetail({ memoId, onBack }: MemoDetailProps) {
   const [textContent, setTextContent] = useState<string>('');
   const [images, setImages] = useState<{ id: string; url: string; caption?: string }[]>([]);
   const [urls, setUrls] = useState<{ id: string; url: string; title: string; description?: string }[]>([]);
-  
-  // UI状態管理
+
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [newUrl, setNewUrl] = useState('');
   const [newUrlTitle, setNewUrlTitle] = useState('');
   const [newUrlDescription, setNewUrlDescription] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // idをstringに統一するヘルパー関数
+  function normalizeImages(images: unknown): { id: string; url: string; caption?: string }[] {
+    if (!images) return [];
+
+    if (typeof images === 'string') {
+      try {
+        const parsed = JSON.parse(images);
+        return normalizeImages(parsed);
+      } catch {
+        return [];
+      }
+    }
+
+    if (Array.isArray(images)) {
+      return images.map((img) => ({
+        id: String((img as any).id),
+        url: (img as any).url,
+        caption: (img as any).caption,
+      }));
+    }
+
+    return [];
+  }
+
+  function normalizeUrls(urls: unknown): { id: string; url: string; title: string; description?: string }[] {
+    if (!urls) return [];
+
+    if (typeof urls === 'string') {
+      try {
+        const parsed = JSON.parse(urls);
+        return normalizeUrls(parsed);
+      } catch {
+        return [];
+      }
+    }
+
+    if (Array.isArray(urls)) {
+      return urls.map((url) => ({
+        id: String((url as any).id),
+        url: (url as any).url,
+        title: (url as any).title,
+        description: (url as any).description,
+      }));
+    }
+
+    return [];
+  }
 
   useEffect(() => {
     const fetchMemo = async () => {
@@ -47,11 +93,11 @@ function MemoDetail({ memoId, onBack }: MemoDetailProps) {
       if (memoId !== 'new') {
         try {
           const response = await fetch(`/api/memos/${memoId}`);
-          
+
           if (!response.ok) {
             const contentType = response.headers.get("content-type");
             let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-            
+
             if (contentType && contentType.indexOf("application/json") !== -1) {
               try {
                 const errorData = await response.json();
@@ -64,39 +110,38 @@ function MemoDetail({ memoId, onBack }: MemoDetailProps) {
           }
 
           const data: Memo = await response.json();
-          
-         // setMemo(data);
+
           setTitle(data.title);
           setMemoType(data.type || 'checklist');
 
-          // アイテムの設定
           if (data.type === 'checklist') {
-            setItems(typeof data.items === 'string' ? JSON.parse(data.items) : data.items || []);
+            setItems(
+              typeof data.items === 'string' && data.items.trim() !== ''
+                ? JSON.parse(data.items)
+                : data.items || []
+            );
             setTextContent('');
           } else if (data.type === 'text') {
             setTextContent(data.textContent || '');
             setItems([]);
           }
 
-          // 画像の設定
-          setImages(typeof data.images === 'string' ? JSON.parse(data.images) : data.images || []);
-          
-          // URLの設定
-          setUrls(typeof data.urls === 'string' ? JSON.parse(data.urls) : data.urls || []);
+          setImages(normalizeImages(data.images));
+          setUrls(normalizeUrls(data.urls));
 
         } catch (e: unknown) {
-  console.error('メモ詳細の取得に失敗しました:', e);
+          console.error('メモ詳細の取得に失敗しました:', e);
 
-  if (e instanceof Error) {
-    setError(`メモ詳細の読み込みに失敗しました: ${e.message}`);
-  } else {
-    setError('メモ詳細の読み込みに失敗しました（詳細不明）');
-  }
+          if (e instanceof Error) {
+            setError(`メモ詳細の読み込みに失敗しました: ${e.message}`);
+          } else {
+            setError('メモ詳細の読み込みに失敗しました（詳細不明）');
+          }
 
-  resetFormData();
-} finally {
-  setIsLoading(false);
-}
+          resetFormData();
+        } finally {
+          setIsLoading(false);
+        }
       } else {
         resetFormData();
         setIsLoading(false);
@@ -104,6 +149,7 @@ function MemoDetail({ memoId, onBack }: MemoDetailProps) {
     };
     fetchMemo();
   }, [memoId]);
+
 
   const resetFormData = () => {
     setTitle('');
