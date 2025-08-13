@@ -18,7 +18,7 @@ interface Memo {
 }
 
 interface MemoDetailProps {
-  memoId: string | 'new';
+  memoId: number | 'new';
   onBack: () => void;
 }
 
@@ -90,9 +90,10 @@ function MemoDetail({ memoId, onBack }: MemoDetailProps) {
     const fetchMemo = async () => {
       setIsLoading(true);
       setError(null);
+
       if (memoId !== 'new') {
         try {
-          const response = await fetch(`/api/memos/${memoId}`);
+          const response = await fetch(`/api/memos/${memoId}`); // memoId は number なのでOK
 
           if (!response.ok) {
             const contentType = response.headers.get("content-type");
@@ -149,6 +150,7 @@ function MemoDetail({ memoId, onBack }: MemoDetailProps) {
     };
     fetchMemo();
   }, [memoId]);
+
 
 
   const resetFormData = () => {
