@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 // import { Button } from "@/components/ui/button";
 import { UserRepository } from "../_repositories/User";
 import MemoPage from '../memo/page';
+import CalendarPage from "../todo/page";
 
 import {
 	Card,
@@ -74,10 +75,12 @@ export default async function Dashboard() {
 							</div>
 						</CardContent>
 					</Card>
-
-					<section>
+<section>
+<CalendarPage />	
+</section>
+		<section>
         <MemoPage />
-      </section>
+        </section>
 				</div>
 			</div>
 		</div>
