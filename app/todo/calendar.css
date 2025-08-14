@@ -1,0 +1,109 @@
+/* ====== コンテナ & カード ====== */
+.cal-wrapper {
+  max-width: 1000px;
+}
+.cal-card {
+  border-radius: 16px;
+  background: #FFFFFF;
+  padding: 12px;
+  border: 1px solid #E9ECEF;
+}
+.cal-card.shadow-sm {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 12px rgba(0,0,0,0.06);
+}
+/* ====== ヘッダー（タイトル／カスタムボタン） ====== */
+.fc .fc-toolbar-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+.fc .fc-button {
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #DEE2E6;
+  background: #FFFFFF;
+  color: #212529;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+.fc .fc-button:disabled { opacity: 0.5; }
+/* 矢印ボタン（左・右） */
+.fc .fc-toolbar .fc-prevCustom-button,
+.fc .fc-toolbar .fc-nextCustom-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  padding: 0;
+  font-weight: 700;
+  line-height: 1;
+}
+/* ホームボタン（画像だけ表示） */
+.fc .fc-toolbar 
+.fc .fc-toolbar  {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  border: none !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+ .fc-homeCustom-button{
+  z-index: 1000;
+}
+/* ヘッダー行のレイアウト */
+.fc .fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* ====== グリッドの見た目 ====== */
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 0;
+}
+.fc-daygrid-day { padding: 6px; }
+.fc-daygrid-day-frame {
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px #F1F3F5;
+  padding: 8px;
+  height: 100%;
+}
+/* .fc-day-today .fc-daygrid-day-frame { */
+  /* outline: 2px solid #5B9CFF;
+  box-shadow: inset 0 0 0 2px #5b9cff33; */
+/* } */
+.fc-day-sun .fc-daygrid-day-frame { background: #FFF5F5; }
+.fc-day-sat .fc-daygrid-day-frame { background: #F4F8FF; }
+.fc-day-other .fc-daygrid-day-frame {
+  background: #F8F9FA;
+  opacity: 0.85;
+}
+.fc-day-sun .fc-daygrid-day-number {
+  color: #DC3545;
+  font-weight: 600;
+}
+.fc-day-sat .fc-daygrid-day-number {
+  color: #0D6EFD;
+  font-weight: 600;
+}
+/* ====== イベントの見た目 ====== */
+.fc-daygrid-event {
+  border-radius: 9999px;
+  padding: 2px 6px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+}
+.fc-daygrid-day-events { margin-top: 6px; }
+.fc-daygrid-more-link {
+  border-radius: 9999px;
+  padding: 2px 8px;
+  background: #E9F0FF;
+  color: #1D4ED8;
+  font-weight: 600;
+}

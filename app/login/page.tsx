@@ -116,9 +116,9 @@ export default function Login() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "ログイン中..." : "ログイン"}
             </Button>
-            <Button type="button" variant="outline" className="w-full bg-transparent" onClick={handleGoogleLogin}>
+            {/* <Button type="button" variant="outline" className="w-full bg-transparent" onClick={handleGoogleLogin}>
               Googleでログイン
-            </Button>
+            </Button> */}
           </CardContent>
         </form>
         <CardFooter>
