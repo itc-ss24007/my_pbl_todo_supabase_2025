@@ -54,6 +54,7 @@
  .fc-homeCustom-button{
   z-index: 1000;
 }
+
 /* ヘッダー行のレイアウト */
 .fc .fc-toolbar-chunk {
   display: flex;
@@ -73,10 +74,10 @@
   padding: 8px;
   height: 100%;
 }
-/* .fc-day-today .fc-daygrid-day-frame { */
-  /* outline: 2px solid #5B9CFF;
-  box-shadow: inset 0 0 0 2px #5b9cff33; */
-/* } */
+ .fc-day-today .fc-daygrid-day-frame { 
+   outline: 2px solid #5B9CFF;
+  box-shadow: inset 0 0 0 2px #5b9cff33; 
+ } 
 .fc-day-sun .fc-daygrid-day-frame { background: #FFF5F5; }
 .fc-day-sat .fc-daygrid-day-frame { background: #F4F8FF; }
 .fc-day-other .fc-daygrid-day-frame {
