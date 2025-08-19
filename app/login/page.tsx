@@ -80,9 +80,7 @@ export default function Login() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">ログイン</CardTitle>
-          <CardDescription className="text-center">
-            メールアドレスとパスワードを入力してアカウントにログインしてください
-          </CardDescription>
+          
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
@@ -113,9 +111,14 @@ export default function Login() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "ログイン中..." : "ログイン"}
-            </Button>
+            <Button
+  type="submit"
+  className="w-full bg-blue-600 text-white rounded-full py-2"
+  disabled={loading}
+>
+  {loading ? "ログイン中..." : "ログイン"}
+</Button>
+
             {/* <Button type="button" variant="outline" className="w-full bg-transparent" onClick={handleGoogleLogin}>
               Googleでログイン
             </Button> */}
