@@ -7,6 +7,7 @@
 
 ## 🚀 プロジェクト概要
 
+- **開発期間**:2025/7/25-2025/8/20(約1ヶ月)
 - **目的**：チームでの開発練習
 - **機能**：
   - ユーザー認証（Supabase）
@@ -23,7 +24,7 @@
 
 ### 1. リポジトリのクローン
 
-git clone https://github.com/itc-ss24007/my_pbl_todo_supabase_2025.git
+git clone https://github.com/itc-ss24007/my_pbl_todo_supabase_2025.git 
 cd my_pbl_todo_supabase_2025
 
 ### 2. パッケージのインストール
@@ -47,24 +48,37 @@ npx prisma migrate deploy
 npm run dev
 👉 ブラウザで http://localhost:3000 を開いて確認！
 
-📦 ディレクトリ構成（例）
-bash
-コードをコピーする
-src/
- ┣ components/     # UIコンポーネント
- ┣ pages/          # ページルーティング
- ┣ lib/            # Supabase, Prisma 設定
- ┗ styles/         # CSSやTailwind設定
+📦 ディレクトリ構成
+/
+├── README.md
+├── app
+│   ├── _repositories    # データ操作ロジック層
+│   ├── api              # APIルート
+│   ├── dashboard
+│   ├── home
+│   ├── login            # ログインページ
+│   ├── signup           # サインアップページ
+│   ├── memo             # Memo管理ページ
+│   └── todo             # Todo管理ページ
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── page.tsx
+│   ├── layout.tsx
+├── lib
+│   ├── supabase.ts      # Supabaseクライアント設定
+├── prisma
+│   ├── migrations       # マイグレーション履歴
+│   └── schema.prisma    # Prismaスキーマ定義
+
 👥 チームメンバー
 名前	役割
-Aさん	フロントエンド
-Bさん	バックエンド・DB設計
-Cさん	UIデザイン
-あなた	機能統合・レビュー
+チーム　　UIデザイン
+Aさん	  ユーザー認証
+B、Cさん	Memo管理ページバックエンド	
+あなた	Todo管理ページ,機能統合・レビュー
 
+🌟 スクリーンショット
 
-
-🌟 スクリーンショット（任意）
 
 
 
