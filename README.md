@@ -7,11 +7,11 @@
 
 ## 🚀 プロジェクト概要
 
-- **開発期間**:2025/7/25-2025/8/20(約1ヶ月)
+- **開発期間**:2025/7/25-2025/8/20(約 1 ヶ月)
 - **目的**：チームでの開発練習
 - **機能**：
   - ユーザー認証（Supabase）
-  - Todoリストの追加・編集・削除
+  - Todo リストの追加・編集・削除
   - メモの作成・保存・表示
   - 自分のアカウントデータのみ閲覧可能
 - **技術スタック**：
@@ -24,11 +24,11 @@
 
 ### 1. リポジトリのクローン
 
-git clone https://github.com/itc-ss24007/my_pbl_todo_supabase_2025.git 
+git clone https://github.com/itc-ss24007/my_pbl_todo_supabase_2025.git
 
 ### 2. パッケージのインストール
 
- npm install
+npm install
 
 ### 3. 環境変数の設定
 
@@ -48,6 +48,7 @@ npm run dev
 👉 ブラウザで http://localhost:3000 を開いて確認！
 
 📦 ディレクトリ構成
+
 ```
 /
 ├── README.md
@@ -73,29 +74,14 @@ npm run dev
 
 ## 👥 チームメンバー / Team Members
 
-本プロジェクトは4名のチームで開発されました。  
-各メンバーがそれぞれの担当領域を持ち、協力してアプリ全体を完成させました。  
+本プロジェクトは 4 名のチームで開発されました。  
+各メンバーがそれぞれの担当領域を持ち、協力してアプリ全体を完成させました。
 
-| 名前 / Name | 役割 / Role |
-|--------------|-------------|
-| チーム | 🎨 UIデザイン / UI Design |
-| Aさん | 🔐 ユーザー認証機能 / User Authentication |
-| Bさん・Cさん | 🧠 Memo管理ページ（バックエンド）/ Memo Management Backend |
-| 自分 | ✅ Todo管理ページ、機能統合・レビュー / Todo Page, Integration & Code Review |
+| 名前 / Name    | 役割 / Role                                                                   |
+| -------------- | ----------------------------------------------------------------------------- |
+| チーム         | 🎨 UI デザイン / UI Design                                                    |
+| A さん         | 🔐 ユーザー認証機能 / User Authentication                                     |
+| B さん・C さん | 🧠 Memo 管理ページ（バックエンド）/ Memo Management Backend                   |
+| 自分           | ✅ Todo 管理ページ、機能統合・レビュー / Todo Page, Integration & Code Review |
 
 🌟 スクリーンショット
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
