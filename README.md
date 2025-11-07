@@ -25,7 +25,6 @@
 ### 1. リポジトリのクローン
 
 git clone https://github.com/itc-ss24007/my_pbl_todo_supabase_2025.git 
-cd my_pbl_todo_supabase_2025
 
 ### 2. パッケージのインストール
 
@@ -49,6 +48,7 @@ npm run dev
 👉 ブラウザで http://localhost:3000 を開いて確認！
 
 📦 ディレクトリ構成
+```
 /
 ├── README.md
 ├── app
@@ -69,13 +69,19 @@ npm run dev
 ├── prisma
 │   ├── migrations       # マイグレーション履歴
 │   └── schema.prisma    # Prismaスキーマ定義
+```
 
-👥 チームメンバー
-名前	役割
-チーム　　UIデザイン
-Aさん	  ユーザー認証
-B、Cさん	Memo管理ページバックエンド	
-あなた	Todo管理ページ,機能統合・レビュー
+## 👥 チームメンバー / Team Members
+
+本プロジェクトは4名のチームで開発されました。  
+各メンバーがそれぞれの担当領域を持ち、協力してアプリ全体を完成させました。  
+
+| 名前 / Name | 役割 / Role |
+|--------------|-------------|
+| チーム | 🎨 UIデザイン / UI Design |
+| Aさん | 🔐 ユーザー認証機能 / User Authentication |
+| Bさん・Cさん | 🧠 Memo管理ページ（バックエンド）/ Memo Management Backend |
+| 自分 | ✅ Todo管理ページ、機能統合・レビュー / Todo Page, Integration & Code Review |
 
 🌟 スクリーンショット
 
