@@ -32,10 +32,10 @@ npm install
 
 ### 3. 環境変数の設定
 
-ルートディレクトリに .env ファイルを作成し、Supabase の情報を記入します。
-DATABASE_URL="postgresql://postgres:password@db.xxxxx.supabase.co:5432/postgres"
-NEXT_PUBLIC_SUPABASE_URL="https://xxxx.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
+ルートディレクトリに .env ファイルを作成し、Supabase の情報を記入します。  
+DATABASE_URL="postgresql://postgres:password@db.xxxxx.supabase.co:5432/postgres"  
+NEXT_PUBLIC_SUPABASE_URL="https://xxxx.supabase.co"  
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"  
 SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 
 ### 4. Prisma マイグレーション
@@ -47,7 +47,7 @@ npx prisma migrate deploy
 npm run dev
 👉 ブラウザで http://localhost:3000 を開いて確認！
 
-📦 ディレクトリ構成
+## 📦 ディレクトリ構成
 
 ```
 /
@@ -74,7 +74,7 @@ npm run dev
 
 ## 👥 チームメンバー / Team Members
 
-本プロジェクトは 4 名のチームで開発されました。  
+本プロジェクトは 5 名のチームで開発されました。  
 各メンバーがそれぞれの担当領域を持ち、協力してアプリ全体を完成させました。
 
 | 名前 / Name    | 役割 / Role                                                                   |
@@ -82,9 +82,7 @@ npm run dev
 | チーム         | 🎨 UI デザイン / UI Design                                                    |
 | A さん         | 🔐 ユーザー認証機能 / User Authentication                                     |
 | B さん・C さん | 🧠 Memo 管理ページ（バックエンド）/ Memo Management Backend                   |
-| 自分           | ✅ Todo 管理ページ、機能統合・レビュー / Todo Page, Integration & Code Review |
-
-🌟 スクリーンショット
+| 自分・D さん   | ✅ Todo 管理ページ、機能統合・レビュー / Todo Page, Integration & Code Review |
 
 ## 📷 スクリーンショット
 
